@@ -1,76 +1,136 @@
-// Función para cargar los conectores desde el archivo JSON
-async function loadConnectors() {
-    try {
-        const response = await fetch('conectores.json');
-        const connectors = await response.json();
-        return connectors;
-    } catch (error) {
-        console.error("Error loading connectors:", error);
-        return [];
+// script.js
+
+// Función para cargar archivos JSON desde la ruta local
+function cargarJSON(archivo) {
+    return fetch(archivo)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error al cargar ${archivo}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .catch((error) => {
+            console.error("Error al cargar el archivo JSON:", error);
+            return null;  // Devuelve null si hay un error, para poder manejarlo
+        });
+}
+
+// Variables para almacenar datos
+let conectores = [];
+let backshells = [];
+let materiales = {};
+
+// Función auxiliar para limpiar nodos de un select
+function limpiarSelect(selectElement) {
+    while (selectElement.firstChild) {
+        selectElement.removeChild(selectElement.firstChild);
     }
 }
 
-// Función para cargar backshells desde el archivo JSON
-async function loadBackshells() {
-    try {
-        const response = await fetch('backshells.json');
-        const backshells = await response.json();
-        return backshells;
-    } catch (error) {
-        console.error("Error loading backshells:", error);
-        return [];
-    }
+// Función auxiliar para agregar una opción a un select
+function agregarOpcion(selectElement, valor, texto) {
+    const option = document.createElement("option");
+    option.value = valor;
+    option.textContent = texto;
+    selectElement.appendChild(option);
 }
 
-// Función para asignar backshells a un conector seleccionado
-function assignBackshells(connectors, backshells) {
-    const selectedPartNumber = document.getElementById("connectorSelect").value;
+// Cargar todos los archivos JSON en paralelo
+function cargarDatos() {
+    Promise.all([
+        cargarJSON('conectores.json'),
+        cargarJSON('backshells.json'),
+        cargarJSON('materiales.json')
+    ]).then(([conectoresData, backshellsData, materialesData]) => {
+        if (conectoresData && backshellsData && materialesData) {
+            conectores = conectoresData;
+            backshells = backshellsData;
+            materiales = materialesData;
+            cargarConectores();  // Cargar los conectores en la UI una vez que los datos estén listos
+        } else {
+            console.error("Error al cargar los datos necesarios.");
+        }
+    });
+}
 
-    // Filtrar conectores para encontrar el seleccionado
-    const selectedConnectors = connectors.filter(connector => connector.partnumber === selectedPartNumber);
-    
-    // Limpiar la lista de backshells
-    const backshellSelect = document.getElementById("backshellSelect");
-    backshellSelect.innerHTML = ""; // Limpiar opciones anteriores
+// Cargar los conectores en el dropdown
+function cargarConectores() {
+    const conectorSelect = document.getElementById("conector");
+    limpiarSelect(conectorSelect);
+    agregarOpcion(conectorSelect, "", "Seleccione un conector");
 
-    // Asignar backshells según los conectores seleccionados
-    selectedConnectors.forEach(connector => {
-        const compatibleBackshells = backshells.filter(backshell =>
-            backshell.shell_size === connector.shell_size && backshell.material === connector.material
+    conectores.forEach((conector) => {
+        const descripcionMaterial = materiales[conector.material] || "Material desconocido";
+        agregarOpcion(
+            conectorSelect,
+            conector.partnumber_raiz,
+            `${conector.partnumber_raiz} - Shell Size: ${conector.shell_size}, Material: ${descripcionMaterial}`
+        );
+    });
+
+    // Si hay conectores disponibles, habilitar el select de conectores
+    conectorSelect.disabled = conectores.length === 0;
+}
+
+// Cargar los backshells compatibles según el conector seleccionado
+function cargarBackshells() {
+    const conectorSelect = document.getElementById("conector");
+    const backshellSelect = document.getElementById("backshell");
+    limpiarSelect(backshellSelect);
+
+    const conectorSeleccionado = conectores.find(
+        (c) => c.partnumber_raiz == conectorSelect.value
+    );
+
+    if (conectorSeleccionado) {
+        // Filtrar los backshells que coincidan con el shell size y el material
+        const backshellsCompatibles = backshells.filter(
+            (b) =>
+                b.shell_size === conectorSeleccionado.shell_size &&
+                b.material === conectorSeleccionado.material
         );
 
-        compatibleBackshells.forEach(backshell => {
-            const option = document.createElement("option");
-            option.value = backshell.partnumber;
-            option.textContent = `${backshell.partnumber} (Shell Size: ${backshell.shell_size})`;
-            backshellSelect.appendChild(option);
-        });
-    });
+        if (backshellsCompatibles.length > 0) {
+            backshellsCompatibles.forEach((backshell) => {
+                const descripcionMaterial = materiales[backshell.material] || "Material desconocido";
+                agregarOpcion(
+                    backshellSelect,
+                    backshell.partnumber_raiz,
+                    `${backshell.partnumber_raiz} - Shell Size: ${backshell.shell_size}, Material: ${descripcionMaterial}`
+                );
+            });
+        } else {
+            agregarOpcion(backshellSelect, "", "No hay backshells compatibles");
+        }
+    }
 
-    if (backshellSelect.options.length === 0) {
-        const option = document.createElement("option");
-        option.textContent = "No compatible backshells found";
-        backshellSelect.appendChild(option);
+    backshellSelect.disabled = backshells.length === 0;
+}
+
+// Confirmar selección de conector y backshell
+function confirmarSeleccion() {
+    const conectorSeleccionado = document.getElementById("conector").value;
+    const backshellSeleccionado = document.getElementById("backshell").value;
+
+    if (conectorSeleccionado && backshellSeleccionado) {
+        console.log("Conector seleccionado:", conectorSeleccionado);
+        console.log("Backshell seleccionado:", backshellSeleccionado);
+
+        // Guardar en localStorage si es necesario
+        localStorage.setItem("conector", conectorSeleccionado);
+        localStorage.setItem("backshell", backshellSeleccionado);
+
+        alert("Selección confirmada.");
+    } else {
+        alert("Por favor, selecciona un conector y un backshell.");
     }
 }
 
-// Función para inicializar la aplicación
-async function init() {
-    const connectors = await loadConnectors();
-    const backshells = await loadBackshells();
+// Eventos para cuando el usuario selecciona un conector
+document.getElementById("conector").addEventListener("change", cargarBackshells);
+document.getElementById("confirmar").addEventListener("click", confirmarSeleccion);
 
-    // Poblar el selector de conectores
-    const connectorSelect = document.getElementById("connectorSelect");
-    connectors.forEach(connector => {
-        const option = document.createElement("option");
-        option.value = connector.partnumber;
-        option.textContent = `${connector.partnumber} (Shell Size: ${connector.shell_size}, Material: ${connector.material})`;
-        connectorSelect.appendChild(option);
-    });
-
-    // Asignar evento para cuando el usuario seleccione un conector
-    connectorSelect.addEventListener("change", () => assignBackshells(connectors, backshells));
-}
-
-// Ejecutar la función de inicialización al cargar la página
-window.onload = init;
+// Inicializar la carga de datos al cargar la página
+window.onload = function () {
+    cargarDatos();
+};
