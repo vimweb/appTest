@@ -1,6 +1,6 @@
 [
-    { "partnumber_raiz": "EN3645", "shell_size": 8, "material": "A" },
-    { "partnumber_raiz": "EN3645", "shell_size": 10, "material": "A" },
-    { "partnumber_raiz": "MS27467", "shell_size": 16, "material": "B" },
-    { "partnumber_raiz": "MS27467", "shell_size": 18, "material": "C" }
+    { "partnumber_raiz": "EN3645-1", "shell_size": 8, "material": "A" },
+    { "partnumber_raiz": "EN3645-2", "shell_size": 10, "material": "A" },
+    { "partnumber_raiz": "MS27467-1", "shell_size": 16, "material": "B" },
+    { "partnumber_raiz": "MS27467-2", "shell_size": 18, "material": "C" }
 ]
