@@ -1,5 +1,6 @@
 [
     { "partnumber_raiz": "BSH-1", "shell_size": 10, "material": "A" },
+    { "partnumber_raiz": "BSH-1", "shell_size": 10, "material": "B" },
     { "partnumber_raiz": "BSH-2", "shell_size": 12, "material": "B" },
     { "partnumber_raiz": "BSH-3", "shell_size": 14, "material": "C" },
     { "partnumber_raiz": "BSH-4", "shell_size": 10, "material": "B" }
