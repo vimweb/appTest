@@ -1,7 +1,8 @@
 [
-    { "partnumber_raiz": "BSH-1", "shell_size": 10, "material": "A" },
-    { "partnumber_raiz": "BSH-1", "shell_size": 10, "material": "B" },
-    { "partnumber_raiz": "BSH-2", "shell_size": 12, "material": "B" },
-    { "partnumber_raiz": "BSH-3", "shell_size": 14, "material": "C" },
-    { "partnumber_raiz": "BSH-4", "shell_size": 10, "material": "B" }
+    { "partnumber": "BS12345-1", "shell_size": 8, "material": "A" },
+    { "partnumber": "BS12345-2", "shell_size": 10, "material": "A" },
+    { "partnumber": "BS12345-3", "shell_size": 12, "material": "A" },
+    { "partnumber": "BS12345-4", "shell_size": 14, "material": "B" },
+    { "partnumber": "BS12345-5", "shell_size": 16, "material": "B" },
+    { "partnumber": "BS12345-6", "shell_size": 18, "material": "C" }
 ]
