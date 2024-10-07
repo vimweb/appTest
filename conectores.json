@@ -1,6 +1,22 @@
 [
     { "partnumber_raiz": "EN3645-1", "shell_size": 8, "material": "A" },
     { "partnumber_raiz": "EN3645-2", "shell_size": 10, "material": "A" },
+    { "partnumber_raiz": "EN3645-3", "shell_size": 12, "material": "A" },
+    { "partnumber_raiz": "EN3645-4", "shell_size": 16, "material": "A" },
+    { "partnumber_raiz": "EN3645-5", "shell_size": 18, "material": "A" },
+    { "partnumber_raiz": "EN3645-6", "shell_size": 10, "material": "A" },
+    { "partnumber_raiz": "EN3645-7", "shell_size": 10, "material": "A" },
+    { "partnumber_raiz": "EN3645-8", "shell_size": 10, "material": "A" },
+    { "partnumber_raiz": "EN3645-9", "shell_size": 10, "material": "A" },
+    { "partnumber_raiz": "EN3645-1", "shell_size": 8, "material": "B" },
+    { "partnumber_raiz": "EN3645-2", "shell_size": 10, "material": "B" },
+    { "partnumber_raiz": "EN3645-3", "shell_size": 12, "material": "B" },
+    { "partnumber_raiz": "EN3645-4", "shell_size": 16, "material": "B" },
+    { "partnumber_raiz": "EN3645-5", "shell_size": 18, "material": "B" },
+    { "partnumber_raiz": "EN3645-6", "shell_size": 10, "material": "B" },
+    { "partnumber_raiz": "EN3645-7", "shell_size": 10, "material": "B" },
+    { "partnumber_raiz": "EN3645-8", "shell_size": 10, "material": "B" },
+    { "partnumber_raiz": "EN3645-9", "shell_size": 10, "material": "B" },
     { "partnumber_raiz": "MS27467-1", "shell_size": 16, "material": "B" },
     { "partnumber_raiz": "MS27467-2", "shell_size": 18, "material": "C" }
 ]
