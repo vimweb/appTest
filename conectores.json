@@ -1,0 +1,5 @@
+[
+    { "partnumber_raiz": "CON-A", "shell_size": 10, "material": "A" },
+    { "partnumber_raiz": "CON-B", "shell_size": 12, "material": "B" },
+    { "partnumber_raiz": "CON-C", "shell_size": 14, "material": "C" }
+]
